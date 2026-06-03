@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>אביב אורבן · שאלון דייר — ראשון לציון</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0a0a0a;
+  --gray-900: #1a1a1a;
+  --gray-700: #4a4a4a;
+  --gray-500: #8a8a8a;
+  --gray-300: #d4d4d4;
+  --gray-200: #e8e8e8;
+  --gray-100: #f4f4f4;
+  --gray-50: #fafafa;
+  --white: #ffffff;
+  --accent: #b89968;
+  --error: #c53030;
+  --success: #2f855a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  font-family: "Heebo", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--gray-50);
+  color: var(--black);
+  line-height: 1.55;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
+  padding: 18px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.topbar .logo { display: flex; align-items: center; gap: 14px; }
+.topbar .logo img { height: 28px; width: auto; }
+.topbar .tagline { color: var(--gray-700); font-size: 13px; font-weight: 500; letter-spacing: 0.02em; }
+.topbar .phone { color: var(--gray-700); font-size: 13px; font-weight: 500; }
+
+.hero {
+  background: var(--black);
+  color: var(--white);
+  padding: 56px 28px 80px;
+  text-align: center;
+  position: relative;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(180deg, transparent 0%, var(--gray-50) 100%);
+  pointer-events: none;
+}
+.hero .label { font-size: 12px; letter-spacing: 0.25em; font-weight: 600; color: var(--accent); margin-bottom: 14px; text-transform: uppercase; }
+.hero h1 { font-size: 44px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 14px; line-height: 1.1; }
+.hero p { font-size: 16px; color: rgba(255,255,255,0.72); max-width: 520px; margin: 0 auto; font-weight: 300; }
+
+.container {
+  max-width: 760px;
+  margin: -40px auto 60px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.progress {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+.progress-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+.progress-step { font-size: 13px; color: var(--gray-500); font-weight: 500; }
+.progress-step strong { color: var(--black); font-weight: 700; }
+.progress-percent { font-size: 13px; color: var(--gray-700); font-weight: 600; }
+.progress-bar { height: 4px; background: var(--gray-200); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--black); width: 0%; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+
+.stepper {
+  display: flex;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  gap: 12px;
+}
+.stepper-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity 0.2s;
+}
+.stepper-item.active { opacity: 1; }
+.stepper-item.done { opacity: 0.85; }
+.stepper-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1.5px solid var(--gray-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gray-500);
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.stepper-item.active .stepper-dot { background: var(--black); border-color: var(--black); color: var(--white); }
+.stepper-item.done .stepper-dot { background: var(--accent); border-color: var(--accent); color: var(--white); }
+.stepper-label { font-size: 13px; color: var(--gray-700); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stepper-item.active .stepper-label { color: var(--black); font-weight: 700; }
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+
+.step { display: none; padding: 36px 36px 28px; animation: fadeIn 0.35s ease-out; }
+.step.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-num { font-size: 11px; letter-spacing: 0.25em; color: var(--accent); font-weight: 700; margin-bottom: 8px; }
+.step-title { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; color: var(--black); }
+.step-desc { color: var(--gray-700); font-size: 15px; margin-bottom: 32px; font-weight: 300; line-height: 1.6; }
+
+.subsection {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--gray-200);
+}
+.subsection:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+.subsection-title {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+  color: var(--gray-700);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.field { margin-bottom: 22px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+@media (max-width: 600px) {
+  .field-row, .field-row-3 { grid-template-columns: 1fr; }
+}
+
+label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--black); letter-spacing: 0.01em; }
+.required { color: var(--error); margin-right: 2px; }
+
+input[type="text"], input[type="tel"], input[type="email"], input[type="number"], input[type="date"], textarea, select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--gray-300);
+  border-radius: 3px;
+  font-size: 15px;
+  font-family: inherit;
+  background: var(--white);
+  color: var(--black);
+  transition: all 0.15s;
+}
+input:focus, textarea:focus, select:focus { outline: none; border-color: var(--black); box-shadow: 0 0 0 3px rgba(0,0,0,0.06); }
+textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+.hint { font-size: 12px; color: var(--gray-500); margin-top: 6px; font-weight: 400; }
+
+.radio-group { display: flex; flex-direction: column; gap: 8px; }
+.radio-option {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px;
+  border: 1px solid var(--gray-300);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--white);
+  font-size: 14px;
+  font-weight: 500;
+}
+.radio-option:hover { border-color: var(--gray-500); background: var(--gray-50); }
+.radio-option input[type="radio"] { margin: 0; accent-color: var(--black); cursor: pointer; width: 16px; height: 16px; }
+.radio-option:has(input:checked) { background: var(--black); border-color: var(--black); color: var(--white); }
+.radio-option:has(input:checked) input[type="radio"] { accent-color: var(--white); }
+
+.conditional {
+  background: var(--gray-50);
+  border-right: 2px solid var(--accent);
+  padding: 18px 20px;
+  border-radius: 3px;
+  margin-top: 16px;
+  display: none;
+  animation: fadeIn 0.3s ease-out;
+}
+.conditional.show { display: block; }
+
+.file-upload {
+  display: block;
+  border: 1.5px dashed var(--gray-300);
+  border-radius: 3px;
+  padding: 22px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--white);
+  position: relative;
+}
+.file-upload:hover { border-color: var(--black); background: var(--gray-50); }
+.file-upload.has-file { border-color: var(--success); background: #f0fdf4; }
+.file-upload input { display: none; }
+.file-upload-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.file-upload-text { font-size: 13px; color: var(--black); font-weight: 600; }
+.file-upload-hint { font-size: 11px; color: var(--gray-500); margin-top: 3px; font-weight: 400; }
+.file-name { color: var(--success); font-size: 12px; margin-top: 8px; font-weight: 600; display: none; }
+.file-upload.has-file .file-name { display: block; }
+
+.nav {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 22px 36px;
+  background: var(--gray-50);
+  border-top: 1px solid var(--gray-200);
+}
+.btn {
+  padding: 12px 28px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.01em;
+}
+.btn-primary { background: var(--black); color: var(--white); }
+.btn-primary:hover { background: var(--gray-900); transform: translateY(-1px); }
+.btn-primary:disabled { background: var(--gray-300); color: var(--gray-500); cursor: not-allowed; transform: none; }
+.btn-primary:disabled:hover { background: var(--gray-300); transform: none; }
+.btn-secondary { background: var(--white); color: var(--black); border-color: var(--gray-300); }
+.btn-secondary:hover { border-color: var(--black); }
+.btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-secondary:disabled:hover { border-color: var(--gray-300); }
+
+.summary-section { margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--gray-200); }
+.summary-section:last-of-type { border-bottom: none; padding-bottom: 0; }
+.summary-title { font-size: 11px; letter-spacing: 0.2em; font-weight: 700; color: var(--gray-700); margin-bottom: 14px; text-transform: uppercase; }
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; font-size: 14px; }
+.summary-row { display: contents; }
+.summary-row dt { color: var(--gray-700); font-weight: 400; }
+.summary-row dd { color: var(--black); font-weight: 600; word-break: break-word; }
+
+footer { text-align: center; padding: 30px 20px; color: var(--gray-500); font-size: 12px; font-weight: 400; }
+footer strong { color: var(--gray-700); }
+
+@media (max-width: 720px) {
+  body { font-size: 15px; }
+  .topbar { padding: 14px 16px; gap: 10px; }
+  .topbar .logo img { height: 22px; }
+  .topbar .tagline { display: none; }
+  .topbar .phone { font-size: 12px; }
+
+  .hero { padding: 36px 18px 70px; }
+  .hero .label { font-size: 11px; letter-spacing: 0.2em; margin-bottom: 10px; }
+  .hero h1 { font-size: 28px; line-height: 1.15; }
+  .hero p { font-size: 14px; }
+
+  .container { margin: -32px auto 30px; padding: 0 12px; }
+
+  .progress { padding: 16px 18px; border-radius: 4px; }
+  .progress-step { font-size: 12px; }
+  .progress-percent { font-size: 12px; }
+
+  .stepper { padding: 12px 14px; gap: 4px; border-radius: 4px; }
+  .stepper-item { gap: 6px; }
+  .stepper-label { display: none; }
+  .stepper-dot { width: 28px; height: 28px; font-size: 12px; }
+
+  .card { border-radius: 4px; }
+  .step { padding: 24px 18px 20px; }
+  .step-num { font-size: 10px; letter-spacing: 0.18em; }
+  .step-title { font-size: 22px; margin-bottom: 6px; }
+  .step-desc { font-size: 14px; margin-bottom: 22px; }
+
+  .subsection { margin-top: 24px; padding-top: 20px; }
+  .subsection-title { font-size: 10px; letter-spacing: 0.16em; }
+
+  .field { margin-bottom: 18px; }
+  .field-row, .field-row-3 { grid-template-columns: 1fr; gap: 14px; }
+
+  label { font-size: 13px; }
+  input[type="text"], input[type="tel"], input[type="email"], input[type="number"], input[type="date"], textarea, select {
+    font-size: 16px; /* iOS zoom prevention */
+    padding: 12px 13px;
+  }
+  textarea { min-height: 80px; }
+
+  .radio-option { padding: 12px 14px; font-size: 14px; }
+  .conditional { padding: 14px 14px; }
+
+  .file-upload {
+    padding: 22px 14px;
+    border-width: 2px;
+  }
+  .file-upload-icon { font-size: 28px; margin-bottom: 4px; }
+  .file-upload-text { font-size: 15px; }
+  .file-upload-hint { font-size: 12px; }
+  /* רמז למובייל: אפשר גם לצלם */
+  .file-upload:not(.has-file)::after {
+    content: '📷 ניתן לצלם או לבחור מהגלריה';
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--gray-500);
+    font-weight: 500;
+  }
+
+  /* Sticky nav at bottom of viewport for mobile — always thumb-reachable */
+  .nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--white);
+    border-top: 1px solid var(--gray-200);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+    padding: 12px 14px calc(12px + env(safe-area-inset-bottom)) 14px;
+    gap: 10px;
+    z-index: 100;
+    margin: 0;
+  }
+  .btn {
+    padding: 16px 14px;
+    font-size: 16px;
+    flex: 1;
+    justify-content: center;
+    border-radius: 12px;
+    min-height: 56px;
+    font-weight: 700;
+  }
+  .btn-secondary { padding: 16px 14px; max-width: 130px; }
+  /* Reserve space at bottom of card so sticky nav doesn't cover content */
+  .card { padding-bottom: 90px; }
+  body.submitted .card { padding-bottom: 0; }
+  body.submitted .nav { display: none; }
+  /* Larger touch targets for radios & checkboxes */
+  .radio-option {
+    min-height: 52px;
+    padding: 14px 14px;
+    font-size: 15px;
+  }
+  .terms-checkbox { font-size: 15px; }
+  .terms-checkbox input[type="checkbox"] { width: 24px; height: 24px; }
+
+  .summary-grid { grid-template-columns: 1fr; gap: 6px; }
+  .summary-row dt { color: var(--gray-500); font-size: 12px; margin-top: 6px; }
+  .summary-section { margin-bottom: 18px; padding-bottom: 18px; }
+
+  footer { padding: 22px 16px; font-size: 11px; }
+}
+
+@media (max-width: 380px) {
+  .hero h1 { font-size: 24px; }
+  .step-title { font-size: 20px; }
+  .stepper-dot { width: 26px; height: 26px; font-size: 11px; }
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: fixed; inset: 0;
+  background: rgba(10,10,10,0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: none;
+  align-items: center; justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.25s ease-out;
+}
+.loading-overlay.show { display: flex; }
+.loading-card {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 40px 48px;
+  text-align: center;
+  max-width: 360px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+}
+.loading-spinner {
+  width: 56px; height: 56px;
+  border: 4px solid var(--gray-200);
+  border-top-color: var(--black);
+  border-radius: 50%;
+  margin: 0 auto 22px;
+  animation: spin 0.9s linear infinite;
+}
+.loading-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--black); }
+.loading-text { font-size: 14px; color: var(--gray-700); line-height: 1.6; }
+.loading-dots::after {
+  content: ''; animation: dots 1.4s steps(4, end) infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes dots {
+  0%, 20% { content: ''; }
+  40% { content: '.'; }
+  60% { content: '..'; }
+  80%, 100% { content: '...'; }
+}
+
+/* Auto-save indicator */
+.save-badge {
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 11px;
+  color: var(--success);
+  font-weight: 600;
+  background: rgba(47, 133, 90, 0.1);
+  padding: 2px 8px;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.save-badge.show { opacity: 1; }
+
+/* Terms of use box */
+.terms-box {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+.terms-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  line-height: 1.6;
+  font-size: 15px;
+}
+.terms-checkbox input[type="checkbox"] {
+  width: 20px; height: 20px;
+  margin: 2px 0 0 0;
+  accent-color: var(--black);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.terms-checkbox a {
+  color: var(--black);
+  text-decoration: underline;
+  font-weight: 600;
+}
+.terms-details {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--gray-300);
+}
+.terms-details summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--gray-700);
+  font-weight: 600;
+  user-select: none;
+  padding: 4px 0;
+}
+.terms-details summary:hover { color: var(--black); }
+.terms-text {
+  margin-top: 14px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--gray-700);
+  max-height: 420px;
+  overflow-y: auto;
+  padding: 8px 4px;
+}
+.terms-text a { color: var(--black); text-decoration: underline; }
+.terms-text h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--black);
+  margin-top: 14px;
+  margin-bottom: 4px;
+}
+.terms-text h4:first-child { margin-top: 0; }
+.terms-text p { margin-bottom: 8px; }
+.terms-text strong { color: var(--black); }
+
+/* Submitted state — hide everything except topbar + thank-you + footer */
+body.submitted .hero,
+body.submitted .progress,
+body.submitted .stepper,
+body.submitted #residentForm { display: none !important; }
+body.submitted .container { padding-top: 40px; }
+body.submitted .card {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+/* Success screen */
+.success-wrap {
+  text-align: center;
+  padding: 80px 24px 60px;
+  animation: fadeUp 0.6s ease-out;
+  background: var(--white);
+  border-radius: 18px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+  max-width: 640px;
+  margin: 0 auto;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.success-check {
+  width: 96px; height: 96px;
+  border-radius: 50%;
+  background: var(--success);
+  margin: 0 auto 28px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+  box-shadow: 0 20px 50px rgba(47, 133, 90, 0.35);
+}
+.success-check svg {
+  width: 48px; height: 48px;
+  stroke: var(--white);
+  stroke-width: 4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+  animation: drawCheck 0.5s ease-out 0.5s forwards;
+}
+@keyframes popIn {
+  0% { transform: scale(0.4); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes drawCheck { to { stroke-dashoffset: 0; } }
+.success-title {
+  font-size: 36px; font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+  color: var(--black);
+  animation: fadeUp 0.5s ease-out 0.7s both;
+}
+.success-message {
+  font-size: 17px;
+  color: var(--gray-700);
+  max-width: 460px;
+  margin: 0 auto;
+  line-height: 1.7;
+  animation: fadeUp 0.5s ease-out 0.85s both;
+}
+.success-brand {
+  margin-top: 44px;
+  padding-top: 28px;
+  border-top: 1px solid var(--gray-200);
+  font-size: 14px;
+  color: var(--gray-500);
+  animation: fadeUp 0.5s ease-out 1s both;
+}
+.success-brand strong { color: var(--gray-700); }
+
+@media (max-width: 600px) {
+  .loading-card { padding: 32px 28px; }
+  .success-wrap { padding: 50px 20px 40px; }
+  .success-check { width: 80px; height: 80px; }
+  .success-check svg { width: 40px; height: 40px; }
+  .success-title { font-size: 28px; }
+  .success-message { font-size: 15px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">
+    <img src="aviv-logo.png" alt="Aviv Urban">
+    <span class="tagline">יוזמים איכות</span>
+  </div>
+  <div class="phone">03-7533247</div>
+</div>
+
+<div class="hero">
+  <div class="label">פינוי בינוי · ראשון לציון</div>
+  <h1>שאלון פרטי דייר</h1>
+  <p>איסוף פרטים לקראת שלב הפינוי. ההתקדמות נשמרת אוטומטית — ניתן לחזור ולהמשיך בהמשך.</p>
+</div>
+
+<div class="container">
+
+  <div class="progress">
+    <div class="progress-top">
+      <div class="progress-step">שלב <strong id="stepCurrent">1</strong> מתוך <strong id="stepTotal">5</strong> <span id="saveBadge" class="save-badge">נשמר ✓</span></div>
+      <div class="progress-percent" id="progressPercent">20%</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <div class="card">
+    <form id="residentForm" onsubmit="handleSubmit(event)">
+
+      <!-- ============================ Step 1: פרטי הדייר ============================ -->
+      <div class="step active" data-step="1">
+        <div class="step-num">שלב 01 · פרטי הדייר</div>
+        <h2 class="step-title">פרטים אישיים והנכס</h2>
+        <p class="step-desc">בחלק הראשון אנא הזן/י את פרטיך ופרטי הדירה לזיהוי. בחלק השני — פרטים נוספים על הבעלים.</p>
+
+        <div class="subsection">
+          <div class="subsection-title">זיהוי דייר ונכס</div>
+
+          <div class="field-row">
+            <div class="field">
+              <label>שם פרטי</label>
+              <input type="text" name="C7_first_name" autocomplete="given-name">
+            </div>
+            <div class="field">
+              <label>שם משפחה</label>
+              <input type="text" name="C8_last_name" autocomplete="family-name">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>טלפון נייד</label>
+            <input type="tel" name="C11_mobile" placeholder="050-1234567" autocomplete="tel" inputmode="tel">
+          </div>
+
+          <div class="field">
+            <label>כתובת הנכס</label>
+            <select name="C3_address">
+              <option value="" disabled selected>בחר/י כתובת...</option>
+              <option value="מוהליבר 28">מוהליבר 28</option>
+              <option value="ויצברד 17">ויצברד 17</option>
+              <option value="החפץ חיים 5">החפץ חיים 5</option>
+              <option value="החפץ חיים 7">החפץ חיים 7</option>
+              <option value="החפץ חיים 9">החפץ חיים 9</option>
+            </select>
+          </div>
+
+          <div class="field-row-3">
+            <div class="field">
+              <label>כניסה</label>
+              <input type="text" name="C4_entrance">
+            </div>
+            <div class="field">
+              <label>קומה</label>
+              <input type="text" name="C5_floor" placeholder="קרקע / 1 / 2..." inputmode="numeric">
+            </div>
+            <div class="field">
+              <label>מספר דירה</label>
+              <input type="text" name="C6_apt_num" inputmode="numeric">
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <div class="subsection-title">פרטי בעלים</div>
+
+          <div class="field-row">
+            <div class="field">
+              <label>תעודת זהות</label>
+              <input type="text" name="C10_id" inputmode="numeric" autocomplete="off">
+              <p class="hint">9 ספרות</p>
+            </div>
+            <div class="field">
+              <label>מייל</label>
+              <input type="email" name="C12_email" placeholder="name@example.com" autocomplete="email" inputmode="email">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>כתובת מגורים עדכנית</label>
+            <input type="text" name="C13_current_address" placeholder="היכן את/ה מתגורר/ת היום">
+            <p class="hint">אם אינך מתגורר/ת בדירה הנמצאת בפרויקט</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================ Step 2: פרטים נוספים ============================ -->
+      <div class="step" data-step="2">
+        <div class="step-num">שלב 02 · פרטים נוספים</div>
+        <h2 class="step-title">איש קשר, קשיש ושוכרים</h2>
+        <p class="step-desc">חלקים אלה רלוונטיים רק אם תענה/תעני "כן" — מלא/י רק את מה שמתאים אליך.</p>
+
+        <div class="subsection">
+          <div class="subsection-title">איש קשר נוסף</div>
+
+          <div class="field">
+            <label>האם יש איש קשר נוסף?</label>
+            <p class="hint" style="margin-top: -2px; margin-bottom: 8px;">לדוגמא: בן/בת, אפוטרופוס, נציג מטעמך</p>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="has_contact" value="yes" onclick="toggleContact(true)"> כן, יש איש קשר נוסף</label>
+              <label class="radio-option"><input type="radio" name="has_contact" value="no" onclick="toggleContact(false)"> לא, רק אני</label>
+            </div>
+          </div>
+
+          <div class="conditional" id="contact-fields">
+            <div class="field">
+              <label>שם איש הקשר</label>
+              <input type="text" name="C15_contact_name" placeholder="שם מלא + תפקיד">
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label>טלפון איש קשר</label>
+                <input type="tel" name="C16_contact_phone" autocomplete="tel" inputmode="tel">
+              </div>
+              <div class="field">
+                <label>מייל איש קשר</label>
+                <input type="email" name="C17_contact_email" autocomplete="email" inputmode="email">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <div class="subsection-title">דייר קשיש</div>
+
+          <div class="field">
+            <label>האם הבעלים מוגדר כדייר קשיש?</label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="C18_senior" value="כן" onclick="toggleSenior(true)"> כן</label>
+              <label class="radio-option"><input type="radio" name="C18_senior" value="לא" onclick="toggleSenior(false)"> לא</label>
+              <label class="radio-option"><input type="radio" name="C18_senior" value="לא יודע" onclick="toggleSenior(false)"> לא יודע</label>
+            </div>
+            <p class="hint">סטטוס דייר קשיש מקנה זכויות מיוחדות בתהליך</p>
+          </div>
+
+          <div class="conditional" id="senior-fields">
+            <div class="field">
+              <label>תאריך לידה</label>
+              <input type="date" name="C20_age" max="2026-05-22" min="1900-01-01">
+            </div>
+            <div class="field">
+              <label>פירוט נוסף</label>
+              <textarea name="C19_senior_details" placeholder="האם הוא מתגורר בדירה? פרטים נוספים"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <div class="subsection-title">פרטי שוכרים</div>
+
+          <div class="field">
+            <label>מי גר בדירה כיום?</label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="C21_status" value="1" onclick="toggleRental(false)"> אני גר/ה בדירה</label>
+              <label class="radio-option"><input type="radio" name="C21_status" value="0" onclick="toggleRental(true)"> הדירה מושכרת לאחרים</label>
+              <label class="radio-option"><input type="radio" name="C21_status" value="2" onclick="toggleRental(false)"> הדירה ריקה</label>
+            </div>
+          </div>
+
+          <div class="conditional" id="rental-fields">
+            <div class="field-row">
+              <div class="field">
+                <label>שמות השוכרים</label>
+                <input type="text" name="C23_tenant_names">
+              </div>
+              <div class="field">
+                <label>טלפון שוכרים / מתווך</label>
+                <input type="tel" name="C24_tenant_phone" autocomplete="tel" inputmode="tel">
+              </div>
+            </div>
+            <div class="field">
+              <label>האם בחוזה כתובה הודעת פינוי 3 חודשים מראש?</label>
+              <div class="radio-group">
+                <label class="radio-option"><input type="radio" name="C25_eviction_notice" value="כן"> כן</label>
+                <label class="radio-option"><input type="radio" name="C25_eviction_notice" value="לא"> לא</label>
+                <label class="radio-option"><input type="radio" name="C25_eviction_notice" value="לא יודע"> לא יודע</label>
+              </div>
+              <p class="hint">אם אין סעיף כזה — חשוב שנדע כדי לטפל בזה במיידי</p>
+            </div>
+            <div class="field">
+              <label>חוזה שכירות מעודכן</label>
+              <label class="file-upload">
+                <input type="file" name="C29_rental_contract" accept=".pdf,.jpg,.jpeg,.png,image/*" onchange="onFileChange(this)">
+                <span class="file-upload-icon">📄</span>
+                <span class="file-upload-text">העלאת חוזה</span>
+                <span class="file-upload-hint">PDF, JPG, PNG · עד 10MB</span>
+                <span class="file-name"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================ Step 3: מסמכים ובנק ============================ -->
+      <div class="step" data-step="3">
+        <div class="step-num">שלב 03 · מסמכים ובנק</div>
+        <h2 class="step-title">מסמכים ופרטי בנק</h2>
+        <p class="step-desc">העלאת חשבונות, צילום ת"ז, ופרטי חשבון בנק להעברות.</p>
+
+        <div class="subsection">
+          <div class="subsection-title">צילומי חשבונות ומסמכים</div>
+
+          <div class="field-row">
+            <div class="field">
+              <label>חשבון ארנונה</label>
+              <label class="file-upload">
+                <input type="file" name="C35_arnona" accept=".pdf,.jpg,.jpeg,.png,image/*" onchange="onFileChange(this)">
+                <span class="file-upload-icon">🏛️</span>
+                <span class="file-upload-text">חשבון ארנונה</span>
+                <span class="file-name"></span>
+              </label>
+            </div>
+            <div class="field">
+              <label>חשבון מים</label>
+              <label class="file-upload">
+                <input type="file" name="C36_water" accept=".pdf,.jpg,.jpeg,.png,image/*" onchange="onFileChange(this)">
+                <span class="file-upload-icon">💧</span>
+                <span class="file-upload-text">חשבון מים</span>
+                <span class="file-name"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label>חשבון חשמל</label>
+              <label class="file-upload">
+                <input type="file" name="C37_electricity" accept=".pdf,.jpg,.jpeg,.png,image/*" onchange="onFileChange(this)">
+                <span class="file-upload-icon">⚡</span>
+                <span class="file-upload-text">חשבון חשמל</span>
+                <span class="file-name"></span>
+              </label>
+            </div>
+            <div class="field">
+              <label>חשבון גז</label>
+              <label class="file-upload">
+                <input type="file" name="C38_gas" accept=".pdf,.jpg,.jpeg,.png,image/*" onchange="onFileChange(this)">
+                <span class="file-upload-icon">🔥</span>
+                <span class="file-upload-text">חשבון גז</span>
+                <span class="file-name"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>צילום תעודת זהות (כולל ספח)</label>
+            <label class="file-upload">
+              <input type="file" name="C39_id_copy" accept=".pdf,.jpg,.jpeg,.png,image/*" onchange="onFileChange(this)">
+              <span class="file-upload-icon">🪪</span>
+              <span class="file-upload-text">העלאת צילום ת"ז</span>
+              <span class="file-upload-hint">חובה — כולל ספח</span>
+              <span class="file-name"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <div class="subsection-title">פרטי חשבון בנק</div>
+
+          <div class="field-row-3">
+            <div class="field">
+              <label>שם הבנק</label>
+              <input type="text" name="C40_bank_name">
+            </div>
+            <div class="field">
+              <label>סניף</label>
+              <input type="text" name="C41_branch" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label>מספר חשבון</label>
+              <input type="text" name="C42_account" inputmode="numeric">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>אישור ניהול חשבון</label>
+            <label class="file-upload">
+              <input type="file" name="C43_bank_confirmation" accept=".pdf,.jpg,.jpeg,.png,image/*" onchange="onFileChange(this)">
+              <span class="file-upload-icon">🏦</span>
+              <span class="file-upload-text">העלאת אישור ניהול חשבון</span>
+              <span class="file-upload-hint">ניתן לקבל מהבנק או מהאפליקציה</span>
+              <span class="file-name"></span>
+            </label>
+          </div>
+
+          <div class="field">
+            <label>אישור חתימה</label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="C44_signed" value="כן"> אני מאשר/ת שהפרטים נכונים ושאני בעל החשבון</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================ Step 4: נסח טאבו ============================ -->
+      <div class="step" data-step="4">
+        <div class="step-num">שלב 04 · נסח טאבו (אופציונלי)</div>
+        <h2 class="step-title">פרטי נסח טאבו</h2>
+        <p class="step-desc">אם יש בידך נסח טאבו, ניתן למלא את הפרטים ולצרף את הקובץ. <strong>כל השלב הזה אינו חובה</strong> — ניתן לדלג ולהמשיך לסיכום.</p>
+
+        <div class="subsection">
+          <div class="subsection-title">פרטים מתוך הנסח</div>
+
+          <div class="field-row">
+            <div class="field">
+              <label>תת חלקה</label>
+              <input type="text" name="C2_tat_helka" inputmode="numeric">
+              <p class="hint">כפי שמופיע בנסח</p>
+            </div>
+            <div class="field">
+              <label>כתובת לפי הנסח</label>
+              <input type="text" name="deed_address">
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label>קומה לפי הנסח</label>
+              <input type="text" name="deed_floor" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label>מספר דירה לפי הנסח</label>
+              <input type="text" name="deed_apt_num" inputmode="numeric">
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <div class="subsection-title">צירוף נסח טאבו</div>
+
+          <div class="field">
+            <label>העלאת קובץ הנסח</label>
+            <label class="file-upload">
+              <input type="file" name="deed_file" accept=".pdf,.jpg,.jpeg,.png,image/*" onchange="onFileChange(this)">
+              <span class="file-upload-icon">📜</span>
+              <span class="file-upload-text">לחץ/י להעלאת נסח טאבו</span>
+              <span class="file-upload-hint">PDF, JPG, PNG · עד 10MB · אופציונלי</span>
+              <span class="file-name"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================ Step 5: סיכום ============================ -->
+      <div class="step" data-step="5">
+        <div class="step-num">שלב 05 · סקירה אחרונה</div>
+        <h2 class="step-title">סיכום ושליחה</h2>
+        <p class="step-desc">סקור/י את הפרטים. ניתן לחזור לשלב קודם כדי לערוך.</p>
+
+        <div id="summary"></div>
+
+        <div class="field" style="margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--gray-200);">
+          <div class="terms-box">
+            <label class="terms-checkbox">
+              <input type="checkbox" name="final_confirm" id="termsAccept" value="כן" onchange="updateSubmitState()">
+              <span>קראתי ואני מאשר/ת את <a href="#" onclick="toggleTerms(event)">תנאי השימוש ומדיניות הפרטיות</a> המפורטים להלן של חברת <strong>אביב אורבן בע"מ</strong>. ידוע לי כי מסירת המידע והעלאת המסמכים נעשית מרצוני החופשי לצורך בדיקת זכויותיי וניהול פרויקט פינוי-הבינוי בראשון לציון, וכי המידע יעובד גם מכוח חובות דין ואינטרסים לגיטימיים של החברה.</span>
+            </label>
+
+            <details class="terms-details" id="termsDetails">
+              <summary>הצג/הסתר את תנאי השימוש המלאים</summary>
+              <div class="terms-text">
+                <h4>פרק א': מדיניות פרטיות והגנת מידע</h4>
+
+                <p><strong>1. גוף האיסוף ובסיס משפטי לעיבוד:</strong> המידע בטופס נאסף עבור חברת <strong>אביב אורבן בע"מ</strong> (ח.פ. 515095669), יזם פרויקט פינוי-בינוי בראשון לציון. העיבוד מבוסס על הסכמה, ניהול מו"מ לקראת חוזה, אינטרסים לגיטימיים של החברה ועמידה בחובות דין. משיכת הסכמה לא תגרע מזכות החברה להחזיק במידע הנדרש לה מכוח החוק או להגנה משפטית.</p>
+
+                <p><strong>2. מטרת האיסוף וסוגי המידע:</strong> המידע מיועד לקידום הפרויקט, זיהוי בעלי הזכויות ובדיקת היתכנות. המידע כולל פרטים מזהים, פרטי קשר, ומסמכים רגישים (צילומי ת"ז וספח, נסחי טאבו, חוזי שכירות ואישורי חשבון בנק).</p>
+
+                <p><strong>3. מידע על צדדים שלישיים:</strong> משתמש המוסר מידע על צד ג' (כמו שוכרים או שותפים) מצהיר כי הוא עושה זאת כדין וקיבל את הסכמתם המפורשת לכך.</p>
+
+                <p><strong>4. העברת מידע לצדדים שלישיים ולחו"ל:</strong> המידע יועבר רק לצורכי הפרויקט ליועצי החברה (עורכי דין, אדריכלים וכד') ולרשויות מוסמכות. המידע עשוי להישמר בשירותי ענן מאובטחים הפועלים גם מחוץ לישראל, בכפוף להוראות הדין.</p>
+
+                <p><strong>5. אבטחת מידע:</strong> החברה מפעילה אמצעי אבטחה טכנולוגיים וארגוניים קפדניים. הגישה למידע מוגבלת לבעלי תפקידים מורשים בלבד, על בסיס הרשאות תפקיד, אמצעי אימות ונהלים פנימיים.</p>
+
+                <p><strong>6. תקופת שמירת המידע:</strong> המידע יישמר כל עוד הדבר נדרש לצורך ניהול הפרויקט, עמידה בדרישות הדין, ניהול הליכים משפטיים עתידיים, ציות רגולטורי ושמירת זכויות החברה (לרבות תקופת ההתיישנות).</p>
+
+                <p><strong>7. טכנולוגיות מעקב (Cookies):</strong> האתר משתמש בעוגיות ובכלי ניתוח (כגון: Google Analytics, Meta Pixel) לצורך תפעול, אבטחה ושיפור חוויית המשתמש. ניתן לחסום רכיבים אלו בהגדרות הדפדפן.</p>
+
+                <p><strong>8. מימוש זכויות ויצירת קשר:</strong> על פי החוק, הנך זכאי/ת לעיין במידע עליך ולבקש לתקנו או למחקו (בכפוף למגבלות הדין), באמצעות פנייה למייל <a href="mailto:info@avivurban.com">info@avivurban.com</a>.</p>
+
+                <h4>פרק ב': תנאי שימוש ואחריות מוגבלת</h4>
+
+                <p><strong>9. היעדר התחייבות והסתמכות:</strong> התוכן באתר מובא כמידע כללי וראשוני בלבד. אינו מהווה התחייבות סופית של החברה ואינו תחליף לייעוץ משפטי, תכנוני או פיננסי מקצועי.</p>
+
+                <p><strong>10. הגבלת אחריות וזמינות האתר:</strong> החברה אינה מתחייבת שהאתר יפעל ללא תקלות או השבתות, ולא תישא באחריות לכל נזק, ישיר או עקיף, שייגרם למשתמש עקב שימוש באתר או הסתמכות על תכניו.</p>
+
+                <p><strong>11. קניין רוחני:</strong> כל זכויות הקניין הרוחני באתר, לרבות עיצובו, קודי המקור, סימני המסחר והטקסטים שבו, שייכים במלואם לחברה (או לצד ג' שהעניק לה רישיון). אין להעתיק או להפיץ חומרים אלו ללא אישור בכתב.</p>
+
+                <p><strong>12. סמכות שיפוט:</strong> על תנאים אלו יחולו חוקי מדינת ישראל בלבד. סמכות השיפוט הבלעדית בכל סכסוך הנוגע לאתר תהיה נתונה לבתי המשפט המוסמכים במחוז תל אביב-יפו.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav">
+        <button type="button" class="btn btn-secondary" id="btnBack" onclick="goBack()" disabled>→ חזרה</button>
+        <button type="button" class="btn btn-primary" id="btnNext" onclick="goNext()">המשך ←</button>
+        <button type="submit" class="btn btn-primary" id="btnSubmit" style="display:none;" disabled title="יש לאשר את תנאי השימוש לפני השליחה">שליחת השאלון ✓</button>
+      </div>
+
+      <div id="submitError" style="display:none; margin-top:18px; padding:14px 16px; background:#fff1f1; border:1px solid #f3c1c1; border-radius:10px; color:#8a1a1a; font-weight:600;"></div>
+    </form>
+
+    <div id="thankYou" style="display:none;" class="success-wrap">
+      <div class="success-check">
+        <svg viewBox="0 0 52 52"><path d="M14 27 L23 36 L40 17"/></svg>
+      </div>
+      <h2 class="success-title">תודה רבה!</h2>
+      <p class="success-message">
+        פרטיך נשמרו בהצלחה במערכת.<br>
+        נציג מטעם <strong>אביב אורבן</strong> יצור איתך קשר בקרוב<br>
+        לתיאום ההמשך בתהליך הפינוי-בינוי.
+      </p>
+      <div class="success-brand">
+        <strong>אביב אורבן</strong> · יוזמים איכות<br>
+        פרויקט פינוי-בינוי, ראשון לציון
+      </div>
+    </div>
+  </div>
+
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-card">
+      <div class="loading-spinner"></div>
+      <div class="loading-title">שולח את פרטיך<span class="loading-dots"></span></div>
+      <div class="loading-text">העלאת המסמכים עשויה להימשך מספר שניות.<br>אנא אל תסגור/י את החלון.</div>
+    </div>
+  </div>
+
+  <footer>
+    <strong>אביב אורבן</strong> · יוזמים איכות · פרויקט ראשון לציון
+  </footer>
+</div>
+
+<script>
+const totalSteps = 5;
+let currentStep = 1;
+const stepTitles = ["פרטי הדייר","פרטים נוספים","מסמכים ובנק","נסח טאבו","סיכום"];
+
+function buildStepper() {
+  const el = document.getElementById('stepper');
+  el.innerHTML = stepTitles.map((t, i) => `
+    <div class="stepper-item ${i+1 === currentStep ? 'active' : ''}" data-step="${i+1}" onclick="goTo(${i+1})">
+      <div class="stepper-dot">${i+1}</div>
+      <div class="stepper-label">${t}</div>
+    </div>
+  `).join('');
+}
+buildStepper();
+
+function updateUI() {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+
+  document.getElementById('stepCurrent').textContent = currentStep;
+  document.getElementById('stepTotal').textContent = totalSteps;
+  const pct = Math.round((currentStep / totalSteps) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPercent').textContent = pct + '%';
+
+  document.querySelectorAll('.stepper-item').forEach(item => {
+    const s = parseInt(item.dataset.step);
+    item.classList.remove('active', 'done');
+    if (s === currentStep) item.classList.add('active');
+    else if (s < currentStep) item.classList.add('done');
+  });
+
+  document.getElementById('btnBack').disabled = currentStep === 1;
+  document.getElementById('btnNext').style.display = currentStep === totalSteps ? 'none' : '';
+  document.getElementById('btnSubmit').style.display = currentStep === totalSteps ? '' : 'none';
+
+  if (currentStep === totalSteps) renderSummary();
+  // גלילה לראש ה-card (לא הדף) — שהדייר רואה את כותרת השלב מיד
+  const card = document.querySelector('.card');
+  const target = Math.max(0, card.getBoundingClientRect().top + window.scrollY - 12);
+  window.scrollTo({ top: target, behavior: 'smooth' });
+}
+
+function validateStep(step) {
+  // ללא חובות — דייר יכול להתקדם גם עם שדות ריקים, מטרה: מילוי מקסימלי
+  return true;
+}
+
+function goNext() {
+  if (!validateStep(currentStep)) return;
+  if (currentStep < totalSteps) { currentStep++; updateUI(); saveDraft(); }
+}
+function goBack() { if (currentStep > 1) { currentStep--; updateUI(); } }
+function goTo(step) {
+  if (step <= currentStep || step === currentStep + 1) { currentStep = step; updateUI(); }
+}
+
+function toggleContact(show) { document.getElementById('contact-fields').classList.toggle('show', show); }
+function toggleSenior(show) { document.getElementById('senior-fields').classList.toggle('show', show); }
+function toggleRental(show) { document.getElementById('rental-fields').classList.toggle('show', show); }
+
+function onFileChange(input) {
+  const wrapper = input.closest('.file-upload');
+  const fnEl = wrapper.querySelector('.file-name');
+  if (input.files.length > 0) {
+    wrapper.classList.add('has-file');
+    fnEl.textContent = '✓ ' + input.files[0].name;
+  } else {
+    wrapper.classList.remove('has-file');
+    fnEl.textContent = '';
+  }
+}
+
+const fieldLabels = {
+  C7_first_name: 'שם פרטי', C8_last_name: 'שם משפחה',
+  C11_mobile: 'נייד', C3_address: 'כתובת הנכס', C4_entrance: 'כניסה',
+  C5_floor: 'קומה', C6_apt_num: 'מספר דירה',
+  C10_id: 'תעודת זהות', C12_email: 'מייל', C13_current_address: 'כתובת מגורים עדכנית',
+  C15_contact_name: 'שם איש קשר', C16_contact_phone: 'טלפון איש קשר', C17_contact_email: 'מייל איש קשר',
+  C18_senior: 'דייר קשיש', C20_age: 'תאריך לידה', C19_senior_details: 'פירוט קשיש',
+  C21_status: 'מצב הדירה', C23_tenant_names: 'שמות שוכרים', C24_tenant_phone: 'טלפון שוכרים',
+  C25_eviction_notice: 'הודעת פינוי 3 חודשים', C29_rental_contract: 'חוזה שכירות',
+  C35_arnona: 'חשבון ארנונה', C36_water: 'חשבון מים', C37_electricity: 'חשבון חשמל',
+  C38_gas: 'חשבון גז', C39_id_copy: 'צילום ת"ז',
+  C40_bank_name: 'שם הבנק', C41_branch: 'סניף', C42_account: 'מספר חשבון',
+  C43_bank_confirmation: 'אישור ניהול חשבון', C44_signed: 'אישור חתימה',
+  C2_tat_helka: 'תת חלקה (נסח)', deed_address: 'כתובת (נסח)',
+  deed_floor: 'קומה (נסח)', deed_apt_num: 'מספר דירה (נסח)', deed_file: 'נסח טאבו',
+};
+const sectionMap = {
+  'זיהוי דייר ונכס': ['C7_first_name','C8_last_name','C11_mobile','C3_address','C4_entrance','C5_floor','C6_apt_num'],
+  'פרטי בעלים': ['C10_id','C12_email','C13_current_address'],
+  'איש קשר נוסף': ['C15_contact_name','C16_contact_phone','C17_contact_email'],
+  'דייר קשיש': ['C18_senior','C20_age','C19_senior_details'],
+  'שוכרים': ['C21_status','C23_tenant_names','C24_tenant_phone','C25_eviction_notice','C29_rental_contract'],
+  'מסמכים': ['C35_arnona','C36_water','C37_electricity','C38_gas','C39_id_copy'],
+  'בנק': ['C40_bank_name','C41_branch','C42_account','C43_bank_confirmation','C44_signed'],
+  'נסח טאבו (אופציונלי)': ['C2_tat_helka','deed_address','deed_floor','deed_apt_num','deed_file'],
+};
+const statusMap = {'1':'גר בדירה','0':'מושכרת','2':'ריקה'};
+
+function renderSummary() {
+  const form = document.getElementById('residentForm');
+  const fd = new FormData(form);
+  const data = {};
+  for (const [k,v] of fd.entries()) {
+    if (v instanceof File) data[k] = v.name ? '✓ ' + v.name : '—';
+    else data[k] = v || '—';
+  }
+  if (data.C21_status) data.C21_status = statusMap[data.C21_status] || data.C21_status;
+
+  const html = Object.entries(sectionMap).map(([section, fields]) => {
+    const rows = fields.filter(f => fieldLabels[f]).map(f => `
+      <div class="summary-row">
+        <dt>${fieldLabels[f]}</dt>
+        <dd>${data[f] || '—'}</dd>
+      </div>`).join('');
+    return `
+      <div class="summary-section">
+        <div class="summary-title">${section}</div>
+        <dl class="summary-grid">${rows}</dl>
+      </div>`;
+  }).join('');
+  document.getElementById('summary').innerHTML = html;
+}
+
+let saveBadgeTimer = null;
+function showSaveBadge() {
+  const b = document.getElementById('saveBadge');
+  if (!b) return;
+  b.classList.add('show');
+  if (saveBadgeTimer) clearTimeout(saveBadgeTimer);
+  saveBadgeTimer = setTimeout(() => b.classList.remove('show'), 1500);
+}
+
+function saveDraft() {
+  const form = document.getElementById('residentForm');
+  const fd = new FormData(form);
+  const data = {};
+  for (const [k,v] of fd.entries()) { if (!(v instanceof File)) data[k] = v; }
+  try {
+    localStorage.setItem('rishlatz_draft', JSON.stringify({step: currentStep, data}));
+    showSaveBadge();
+  } catch(e){}
+}
+function loadDraft() {
+  try {
+    const raw = localStorage.getItem('rishlatz_draft');
+    if (!raw) return;
+    const {data} = JSON.parse(raw);
+    Object.entries(data || {}).forEach(([k,v]) => {
+      const el = document.querySelector(`[name="${k}"]`);
+      if (!el) return;
+      if (el.type === 'radio') {
+        const r = document.querySelector(`[name="${k}"][value="${v}"]`);
+        if (r) { r.checked = true; r.dispatchEvent(new Event('click')); }
+      } else el.value = v;
+    });
+  } catch(e){}
+}
+loadDraft();
+updateSubmitState();
+document.getElementById('residentForm').addEventListener('input', saveDraft);
+
+// כתובת ה-Web App של Apps Script
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwqL0EyoZJxJVlgtWMu4tyT70JEw5Epp-qaDLSeD3XmoKcxca8dw8wOUbP-v_7Q9Evb/exec';
+
+// גרסת תנאי השימוש המוצגת בטופס — לעדכן בכל שינוי משפטי
+const TERMS_VERSION = 'v2-2026-05-26';
+
+// שליפת IP מצד שלישי (לא חוסם — אם נכשל, IP יישאר ריק)
+async function fetchUserIp() {
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 3000);
+    const r = await fetch('https://api.ipify.org?format=json', { signal: ctrl.signal });
+    clearTimeout(t);
+    const j = await r.json();
+    return j.ip || '';
+  } catch (_) { return ''; }
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result;
+      const base64 = result.split(',')[1] || '';
+      resolve({ name: file.name, mimeType: file.type, base64 });
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function toggleTerms(e) {
+  e.preventDefault();
+  const d = document.getElementById('termsDetails');
+  d.open = !d.open;
+  if (d.open) d.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// כפתור השליחה מושבת עד שמסמנים את תיבת אישור תנאי השימוש
+function updateSubmitState() {
+  const cb = document.getElementById('termsAccept');
+  const btn = document.getElementById('btnSubmit');
+  if (!cb || !btn) return;
+  btn.disabled = !cb.checked;
+  btn.title = cb.checked ? '' : 'יש לאשר את תנאי השימוש לפני השליחה';
+}
+
+async function handleSubmit(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btnSubmit');
+  const errorBox = document.getElementById('submitError');
+  const overlay = document.getElementById('loadingOverlay');
+  errorBox.style.display = 'none';
+
+  const termsBox = document.getElementById('termsAccept');
+  if (!termsBox.checked) {
+    errorBox.textContent = 'יש לאשר את תנאי השימוש לפני שליחת הטופס';
+    errorBox.style.display = 'block';
+    termsBox.focus();
+    termsBox.closest('.terms-box').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  btn.disabled = true;
+  overlay.classList.add('show');
+
+  try {
+    const form = e.target;
+    const fd = new FormData(form);
+    const payload = {};
+
+    for (const [k, v] of fd.entries()) {
+      if (v instanceof File) {
+        if (v.size > 0) payload[k] = await fileToBase64(v);
+      } else {
+        payload[k] = v;
+      }
+    }
+
+    // לוג משפטי — גרסת מסמך, IP, User Agent (להוכחת אישור הצ'קבוקס בזמן אמת)
+    payload.__legal_doc_version__ = TERMS_VERSION;
+    payload.__legal_ip__ = await fetchUserIp();
+    payload.__legal_user_agent__ = navigator.userAgent || '';
+
+    if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('__APPS_SCRIPT_URL__') === 0) {
+      throw new Error('הטופס עוד לא חובר לשרת. אנא פנה למנהל.');
+    }
+
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+    });
+
+    const json = await res.json();
+    if (!json.success) throw new Error(json.error || 'שגיאה לא ידועה');
+
+    try { localStorage.removeItem('rishlatz_draft'); } catch (_) {}
+    overlay.classList.remove('show');
+    document.body.classList.add('submitted');
+    document.getElementById('thankYou').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (err) {
+    overlay.classList.remove('show');
+    errorBox.textContent = 'שגיאה: ' + (err.message || err);
+    errorBox.style.display = 'block';
+    btn.disabled = false;
+  }
+}
+
+updateUI();
+</script>
+</body>
+</html>
