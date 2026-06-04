@@ -816,52 +816,10 @@ body.submitted .card {
       <div class="step" data-step="3">
         <div class="step-num">שלב 03 · מסמכים ובנק</div>
         <h2 class="step-title">מסמכים ופרטי בנק</h2>
-        <p class="step-desc">העלאת חשבונות, צילום ת"ז, ופרטי חשבון בנק להעברות.</p>
+        <p class="step-desc">צילום ת"ז ופרטי חשבון בנק להעברות.</p>
 
         <div class="subsection">
-          <div class="subsection-title">צילומי חשבונות ומסמכים</div>
-
-          <div class="field-row">
-            <div class="field">
-              <label>חשבון ארנונה</label>
-              <label class="file-upload">
-                <input type="file" name="C35_arnona" accept=".pdf,.jpg,.jpeg,.png,image/*" onchange="onFileChange(this)">
-                <span class="file-upload-icon">🏛️</span>
-                <span class="file-upload-text">חשבון ארנונה</span>
-                <span class="file-name"></span>
-              </label>
-            </div>
-            <div class="field">
-              <label>חשבון מים</label>
-              <label class="file-upload">
-                <input type="file" name="C36_water" accept=".pdf,.jpg,.jpeg,.png,image/*" onchange="onFileChange(this)">
-                <span class="file-upload-icon">💧</span>
-                <span class="file-upload-text">חשבון מים</span>
-                <span class="file-name"></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <label>חשבון חשמל</label>
-              <label class="file-upload">
-                <input type="file" name="C37_electricity" accept=".pdf,.jpg,.jpeg,.png,image/*" onchange="onFileChange(this)">
-                <span class="file-upload-icon">⚡</span>
-                <span class="file-upload-text">חשבון חשמל</span>
-                <span class="file-name"></span>
-              </label>
-            </div>
-            <div class="field">
-              <label>חשבון גז</label>
-              <label class="file-upload">
-                <input type="file" name="C38_gas" accept=".pdf,.jpg,.jpeg,.png,image/*" onchange="onFileChange(this)">
-                <span class="file-upload-icon">🔥</span>
-                <span class="file-upload-text">חשבון גז</span>
-                <span class="file-name"></span>
-              </label>
-            </div>
-          </div>
+          <div class="subsection-title">מסמכים</div>
 
           <div class="field">
             <label>צילום תעודת זהות (כולל ספח)</label>
@@ -913,58 +871,9 @@ body.submitted .card {
         </div>
       </div>
 
-      <!-- ============================ Step 4: נסח טאבו ============================ -->
+      <!-- ============================ Step 4: סיכום ============================ -->
       <div class="step" data-step="4">
-        <div class="step-num">שלב 04 · נסח טאבו (אופציונלי)</div>
-        <h2 class="step-title">פרטי נסח טאבו</h2>
-        <p class="step-desc">אם יש בידך נסח טאבו, ניתן למלא את הפרטים ולצרף את הקובץ. <strong>כל השלב הזה אינו חובה</strong> — ניתן לדלג ולהמשיך לסיכום.</p>
-
-        <div class="subsection">
-          <div class="subsection-title">פרטים מתוך הנסח</div>
-
-          <div class="field-row">
-            <div class="field">
-              <label>תת חלקה</label>
-              <input type="text" name="C2_tat_helka" inputmode="numeric">
-              <p class="hint">כפי שמופיע בנסח</p>
-            </div>
-            <div class="field">
-              <label>כתובת לפי הנסח</label>
-              <input type="text" name="deed_address">
-            </div>
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <label>קומה לפי הנסח</label>
-              <input type="text" name="deed_floor" inputmode="numeric">
-            </div>
-            <div class="field">
-              <label>מספר דירה לפי הנסח</label>
-              <input type="text" name="deed_apt_num" inputmode="numeric">
-            </div>
-          </div>
-        </div>
-
-        <div class="subsection">
-          <div class="subsection-title">צירוף נסח טאבו</div>
-
-          <div class="field">
-            <label>העלאת קובץ הנסח</label>
-            <label class="file-upload">
-              <input type="file" name="deed_file" accept=".pdf,.jpg,.jpeg,.png,image/*" onchange="onFileChange(this)">
-              <span class="file-upload-icon">📜</span>
-              <span class="file-upload-text">לחץ/י להעלאת נסח טאבו</span>
-              <span class="file-upload-hint">PDF, JPG, PNG · עד 10MB · אופציונלי</span>
-              <span class="file-name"></span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <!-- ============================ Step 5: סיכום ============================ -->
-      <div class="step" data-step="5">
-        <div class="step-num">שלב 05 · סקירה אחרונה</div>
+        <div class="step-num">שלב 04 · סקירה אחרונה</div>
         <h2 class="step-title">סיכום ושליחה</h2>
         <p class="step-desc">סקור/י את הפרטים. ניתן לחזור לשלב קודם כדי לערוך.</p>
 
@@ -1054,7 +963,7 @@ body.submitted .card {
 </div>
 
 <script>
-const totalSteps = 5;
+const totalSteps = 4;
 let currentStep = 1;
 const stepTitles = ["פרטי הדייר","פרטים נוספים","מסמכים ובנק","נסח טאבו","סיכום"];
 
@@ -1149,9 +1058,8 @@ const sectionMap = {
   'איש קשר נוסף': ['C15_contact_name','C16_contact_phone','C17_contact_email'],
   'דייר קשיש': ['C18_senior','C20_age','C19_senior_details'],
   'שוכרים': ['C21_status','C23_tenant_names','C24_tenant_phone','C25_eviction_notice','C29_rental_contract'],
-  'מסמכים': ['C35_arnona','C36_water','C37_electricity','C38_gas','C39_id_copy'],
+  'מסמכים': ['C39_id_copy'],
   'בנק': ['C40_bank_name','C41_branch','C42_account','C43_bank_confirmation','C44_signed'],
-  'נסח טאבו (אופציונלי)': ['C2_tat_helka','deed_address','deed_floor','deed_apt_num','deed_file'],
 };
 const statusMap = {'1':'גר בדירה','0':'מושכרת','2':'ריקה'};
 
